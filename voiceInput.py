@@ -1,6 +1,20 @@
 import speech_recognition as sr
+from selenium import webdriver
+import webbrowser
 
-#
+
+# Program workflow:
+
+# Open instagram on reels. If not logged in, throw error
+# Need to unmute
+
+# When you say stop, an alert pops up that says "You can never stop scrolling"
+
+
+
+
+
+# Listens to specific words in sentences
 def perform_action(command):
 
     if "scroll" in command:
@@ -25,14 +39,13 @@ def listen_and_recognize():
     with microphone as source:
 
         # Adjust for background noise
-        recogniser.adjust_for_ambient_noise(source)
+        recogniser.adjust_for_ambient_noise(source, duration=1)
 
         while True:
             try:
 
                 # Listen to the microphone
-                print("Listening...")
-                audio = recogniser.listen(source)
+                audio = recogniser.listen(source, phrase_time_limit=1)
 
                 # Recognise speech and convert to lowercase
                 command = recogniser.recognize_google(audio).lower()
@@ -49,4 +62,9 @@ def listen_and_recognize():
                 print(f"Error with the recognition service: {e}")
                 break
 
-listen_and_recognize()
+def open_instagram():
+
+    webbrowser.open("https://www.instagram.com/reels")
+    listen_and_recognize()
+
+open_instagram()
