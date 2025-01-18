@@ -107,7 +107,7 @@ def open_instagram():
     # Start listening for voice commands
     listen_and_recognize()
 
-PROFILE_PATH = r"C:\Users\blacb\AppData\Local\Google\Chrome\User Data"
+PROFILE_PATH = r""
 
 # Adds options to chrome path
 options = Options()
