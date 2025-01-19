@@ -9,19 +9,55 @@ import time
 
 # Program workflow:
 
+# Mouse position: (1789, 986)
+
 # Open instagram on reels. If not logged in, throw error
 # Need to unmute
 
 # When you say stop, an alert pops up that says "You can never stop scrolling"
 
 
-#Like : x1ypdohk
+#Like : x1lliihq x1n2onr6 xyb1xck
+
+def locate_active_reel():
+    """Locate the currently active reel container."""
+    try:
+        # Locate the visible reel container
+        reel_container = driver.find_element(By.XPATH, "//div[@aria-hidden='false']")
+        print("Active reel located.")
+        return reel_container
+    except Exception as e:
+        print(f"Error locating active reel: {e}")
+        return None
+
+def click_like_button():
+    """Click the like button within the active reel."""
+    try:
+        # Locate the active reel
+        active_reel = locate_active_reel()
+
+        if not active_reel:
+            print("No active reel found.")
+            return
+
+        # Find the "like" button within the active reel
+        like_button = active_reel.find_element(By.XPATH, ".//svg[@aria-label='Like']")
+        
+        # Ensure the button is visible and interactable
+        if like_button.is_displayed():
+            like_button.click()
+            print("Liked the current reel!")
+        else:
+            print("Like button is not visible.")
+    except Exception as e:
+        print(f"Error clicking the like button: {e}")
+
 
 
 # Listens to specific words in sentences
 def perform_action(command):
 
-    if "scroll" in command:
+    if "scroll" in command or "stroll" in command or "troll" in command:
         print("Scrolling action triggered!")
         pyautogui.press("down")
     
@@ -39,23 +75,12 @@ def perform_action(command):
         pyautogui.click()
     
     elif "like" in command:
-        try:
-            # Locate the like button using its class name
-            like_button = driver.find_element(By.CLASS_NAME, "x1ypdohk")
-            
-            # Scroll into view if necessary
-            driver.execute_script("arguments[0].scrollIntoView();", like_button)
-            time.sleep(0.5)  # Wait a moment to ensure the button is in view
-            
-            # Click the like button
-            like_button.click()
-            print("Liked the reel!")
-        except Exception as e:
-            print(f"Error clicking the like button: {e}")
+        print("Liking the current reel...")
+        # click_like_button()
+        # Temp solution
+        pyautogui.moveTo(1789, 986)
+        pyautogui.click()
 
-    elif "stop" in command:
-        print("Stopping the program...")
-        return False
     
     return True
 
@@ -100,14 +125,15 @@ def open_instagram():
 
     # Open Instagram Reels in the browser
     driver.get("https://www.instagram.com/reels")
-    
-    # Wait for the page to load (adjust as needed)
-    time.sleep(1)
+
+    # This unmutes the reels
+    pyautogui.moveTo(1693, 292)
+    pyautogui.click()
     
     # Start listening for voice commands
     listen_and_recognize()
 
-PROFILE_PATH = r""
+PROFILE_PATH = r"C:\Users\blacb\AppData\Local\Google\Chrome\User Data"
 
 # Adds options to chrome path
 options = Options()
